@@ -1,12 +1,14 @@
 import { Button, TextField } from "@mui/material"
 import { Box } from "@mui/system"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { IPost } from "../post"
+import { SnackbarContext } from "./SnackbarContext"
 
 export const Form = ({post,onSave}: {
     post?:IPost, 
     onSave:(title: string, description:string)=>void
 })=>{
+    const { showSnackbar } = useContext(SnackbarContext)
     const [title, setTitle] = useState<string>(post?.title || '')
     const [description, setDescription] = useState<string>(post?.body || '')
 
@@ -14,12 +16,11 @@ export const Form = ({post,onSave}: {
     const handleSubmit =  (e:React.FormEvent)=>{
         e.preventDefault()
         if(!title.trim()){
-        console.log('title', title)
-            
+            showSnackbar('error', 'field title is empty')
             return
         }
         if(!description.trim()){
-            console.log('description', description)
+            showSnackbar('error', 'field description is empty')
             return
         }
 

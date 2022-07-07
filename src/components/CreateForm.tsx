@@ -1,21 +1,23 @@
 import { Box, Button, Typography } from "@mui/material"
-import React from "react"
+import React, { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { RoutesEnum } from "../routes"
 import { createPost } from "../services"
 import { Form } from "./Form"
+import { SnackbarContext } from "./SnackbarContext"
 
 export const CreateForm = ()=>{
+    const { showSnackbar } = useContext(SnackbarContext)
     const navigate = useNavigate()
 
     const handleSubmit = async (title:string, description: string)=>{
         const result = await createPost({title, description})
 
         if(typeof result === 'string'){
-            console.log('res', result)
+            showSnackbar('error', result)
             return
         }
-
+        showSnackbar('success', 'Created new post')
         navigate(RoutesEnum.home)
     }
 

@@ -3,11 +3,13 @@ import { Route, Routes } from 'react-router-dom';
 import { CreateForm } from './components/CreateForm';
 import { Details } from './components/Details';
 import { Home } from './components/Home';
+import { CustomSnackbar } from './components/SnackbarContext/CastomSnackbar';
 import { RoutesEnum } from './routes';
 
 function App() {
   return (
     <Box>
+      <CustomSnackbar />
       <Routes>
         <Route path={RoutesEnum.home} element={<Home />} />
         <Route path={RoutesEnum.create} element={<CreateForm />} />

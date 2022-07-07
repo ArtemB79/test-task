@@ -1,21 +1,23 @@
 import { Box, Button, Card, CardActionArea, CardContent, Stack, Typography } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import AddIcon from '@mui/icons-material/Add';
 import { IPost } from "../post"
 import { getAllPosts } from "../services"
 import { useNavigate } from "react-router-dom";
 import { RoutesEnum } from "../routes";
+import { SnackbarContext } from "./SnackbarContext";
 
 export const Home = ()=>{
+    const {showSnackbar} = useContext(SnackbarContext)
     const navigate = useNavigate()
     const [posts , setPosts] = useState<IPost[]>()
 
     useEffect(()=>{
         getAllPosts()
         .then(data=>setPosts(data))
-        .catch(err=> console.log(err))
+        .catch(err=> showSnackbar('error',err))
         
-    },[])
+    },[showSnackbar])
 
     return <Box>
         <Box sx={{
@@ -45,7 +47,7 @@ export const Home = ()=>{
         </Box>
         <Stack sx={{
             display: 'flex',
-            padding: '55px 30px 30px 30px',
+            padding: '65px 30px 30px 30px',
             flexDirection:'row',
             flexWrap: 'wrap',
             gap:'20px'}}>

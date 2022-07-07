@@ -5,14 +5,18 @@ import {
     DialogContent, DialogTitle, IconButton, Tooltip, Typography } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { IPost } from "../post"
 import { RoutesEnum } from "../routes"
 import { deletePost, getPost, updatePost } from "../services"
 import { Form } from "./Form";
+import { SnackbarContext } from "./SnackbarContext";
 
 export const Details = ()=>{
+
+    const { showSnackbar } = useContext(SnackbarContext)
+
     const { id } = useParams()
     const navigate = useNavigate()
     const [post, setPost]= useState<IPost>()
@@ -21,17 +25,17 @@ export const Details = ()=>{
     useEffect(()=>{
         getPost(Number(id))
         .then(post =>setPost(post))
-        .catch(err => console.log(err))
-    }, [id])
+        .catch(err => showSnackbar('error', err))
+    }, [id, showSnackbar])
 
     const handleDeletePost = async()=>{
         if(post?.id){
           const data = await deletePost(post.id)
           if(typeof data === 'string'){
-            console.log('data', data)
+            showSnackbar('error', data)
             return
         }
-
+        showSnackbar('success', 'Deleted new post')
         navigate(RoutesEnum.home)
         }
     }
@@ -48,9 +52,10 @@ export const Details = ()=>{
         const result = await updatePost(data)
 
         if(typeof result === 'string'){
-            console.log('res', result)
+            showSnackbar('error', result)
             return
         }
+        showSnackbar('success', 'Updated  post')
         setIsShowEditModal(false)
         navigate(RoutesEnum.home)
     }
