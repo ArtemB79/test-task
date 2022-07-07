@@ -10,13 +10,18 @@ import { SnackbarContext } from "./SnackbarContext";
 export const Home = ()=>{
     const {showSnackbar} = useContext(SnackbarContext)
     const navigate = useNavigate()
-    const [posts , setPosts] = useState<IPost[]>()
+    const [posts, setPosts] = useState<IPost[]>([])
 
-    useEffect(()=>{
-        getAllPosts()
-        .then(data=>setPosts(data))
-        .catch(err=> showSnackbar('error',err))
+    useEffect( ()=>{
+        (async function(){
+            const data =  await getAllPosts()
+            if(typeof data === 'string'){
+                showSnackbar('error',data)
         
+            }else{
+                setPosts(data)
+            }
+        })()
     },[showSnackbar])
 
     return <Box>

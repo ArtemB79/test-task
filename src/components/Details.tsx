@@ -23,9 +23,16 @@ export const Details = ()=>{
     const [isShowEditModal,setIsShowEditModal] = useState<boolean>(false)
     
     useEffect(()=>{
-        getPost(Number(id))
-        .then(post =>setPost(post))
-        .catch(err => showSnackbar('error', err))
+        (async function(){
+            const data =  await getPost(Number(id))
+            if(typeof data === 'string'){
+                showSnackbar('error',data)
+        
+            }else{
+                setPost(data)
+            }
+        })()
+        
     }, [id, showSnackbar])
 
     const handleDeletePost = async()=>{
