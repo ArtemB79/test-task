@@ -1,6 +1,5 @@
 import {  
     Box,
-    Button,
     Dialog,
     DialogContent, DialogTitle, IconButton, Tooltip, Typography } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,6 +11,7 @@ import { RoutesEnum } from "../routes"
 import { deletePost, getPost, updatePost } from "../services"
 import { Form } from "./Form";
 import { SnackbarContext } from "./SnackbarContext";
+import { Header } from "./Header";
 
 export const Details = ()=>{
 
@@ -68,30 +68,7 @@ export const Details = ()=>{
     }
 
     return <Box>
-        <Box sx={{
-            height: '50px',
-            width:'100%',
-            padding:'5px',
-            backgroundColor:'blue',
-            position:'fixed',
-            display:'flex',
-            justifyContent:'space-between',
-            alignItems:'center',
-            zIndex:'999'
-            }}>
-                <Typography 
-                    component="div"
-                    color='white'
-                    variant="h4">
-                    Post
-                </Typography>
-                <Button 
-                    onClick={()=> navigate(RoutesEnum.home)}
-                    sx={{marginRight:'15px'}}
-                    variant="contained">
-                     Back to all Posts
-                </Button>
-        </Box>
+        <Header />
         <Box sx={{padding:'70px 20px 20px 20px'}}>
             <Box sx={{display: 'flex',alignItems:'center', gap: '10px', marginBottom: '10px'}}>
                 <Typography variant="h6">Title:</Typography>
